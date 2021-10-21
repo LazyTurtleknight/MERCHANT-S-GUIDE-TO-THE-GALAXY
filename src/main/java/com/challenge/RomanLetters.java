@@ -7,13 +7,26 @@ package com.challenge;
 public enum RomanLetters {
   I("I"), V("V"), X("X"), L("L"), C("C"), D("D"), M("M");
 
-  private final String letter;
+  public final String letter;
 
-  RomanLetters(String literal) {
+  private RomanLetters(String literal) {
     this.letter = literal;
   }
 
-  public String getLetter(RomanLetters romanLetter) {
-    return romanLetter.letter;
+  /**
+   * Helper function to find RomanLetters object that corresponds to a given
+   * value.
+   * 
+   * @param value to find
+   * @return RomanLetters object corresponding to value if there is one otherwise
+   *         null indicating that there is no
+   */
+  public static RomanLetters findLetter(String value) {
+    for (RomanLetters letter : RomanLetters.values()) {
+      if (letter.letter.equals(value)) {
+        return letter;
+      }
+    }
+    return null;
   }
 }
