@@ -34,4 +34,12 @@ public class AliasContainerTest {
 
   }
 
+  @Test
+  public void testConvertRomanToDecimal() {
+    String accept = RomanLetters.M.letter + RomanLetters.D.letter + RomanLetters.C.letter + RomanLetters.L.letter
+        + RomanLetters.X.letter + RomanLetters.V.letter + RomanLetters.I.letter;
+    assertTrue(aliasContainer.convertRomanToDecimal(accept) == 1666);
+
+  }
+
 }

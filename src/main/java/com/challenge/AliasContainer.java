@@ -58,4 +58,48 @@ public class AliasContainer {
     }
     return false;
   }
+
+  /**
+   * This function takes a Roman number as string and converts it to a decimal
+   * number.
+   * 
+   * This function searches for the first letter with the highest value in the
+   * string and splits it in two, the substring to the left of the highest value
+   * and the substring to the right of the highest value. Subtracting the left and
+   * adding the right part.
+   * 
+   * @param romanNumber to convert to decimal number
+   * @return converted decimal number
+   */
+  public Integer convertRomanToDecimal(String romanNumber) {
+    // Base cases for recursion
+    if (romanNumber.length() == 0) {
+      return 0;
+    }
+
+    if (romanNumber.length() == 1) {
+      return this.romanLetterDict.get(RomanLetters.findLetter(romanNumber));
+    }
+
+    Integer decimalNumber = 0;
+    Integer biggestIndex = 0;
+    String biggest = romanNumber.substring(biggestIndex, biggestIndex + 1);
+    // Search for the first appearance of the highest Roman letter
+    for (Integer index = 0; index < romanNumber.length(); index++) {
+      if (this.romanLetterDict
+          .get(RomanLetters.findLetter(romanNumber.substring(index, index + 1))) > this.romanLetterDict
+              .get(RomanLetters.findLetter(biggest))) {
+        biggestIndex = index;
+        biggest = romanNumber.substring(index, index + 1);
+      }
+    }
+
+    // Split the number, left is subtracted from the highest value and the right is
+    // added to the highest value
+    decimalNumber += -this.convertRomanToDecimal(romanNumber.substring(0, biggestIndex))
+        + this.romanLetterDict.get(RomanLetters.findLetter(biggest))
+        + this.convertRomanToDecimal(romanNumber.substring(biggestIndex + 1));
+    return decimalNumber;
+
+  }
 }
