@@ -102,4 +102,128 @@ public class AliasContainer {
     return decimalNumber;
 
   }
+
+  public boolean validateRomanNumber(String romanNumber) {
+
+    for (Integer index = 0; index < romanNumber.length(); index++) {
+      if (RomanLetters.findLetter(romanNumber.substring(index, index + 1)) == null) {
+        return false;
+      }
+    }
+
+    String substring = "";
+    for (RomanLetters letter : RomanLetters.values()) {
+
+      // Numbers that start with five can not be repeated
+      if (String.valueOf(this.romanLetterDict.get(letter)).charAt(0) == '5') {
+        substring = letter.letter + letter.letter;
+      }
+      // Numbers that do not start with five (with one) can only be repeated thrice
+      else {
+        substring = letter.letter + letter.letter + letter.letter + letter.letter;
+      }
+
+      if (romanNumber.contains(substring)) {
+        return false;
+      }
+    }
+
+    return this.validateRomanSubRule(romanNumber);
+  }
+
+  /**
+   * This is a helper function starts the check if a given Roman number is valid
+   * and is used by the recursion of validateRomanSubRule function below.
+   * 
+   * This function except to be called by validateRomanNumber because it needs
+   * some preprocessing from that function.
+   * 
+   * @param romanNumber to check
+   * @return true is the number is valid otherwise false
+   */
+  public boolean validateRomanSubRule(String romanNumber) {
+
+    if (romanNumber.length() == 0) {
+      return true;
+    }
+
+    Integer biggestIndex = 0;
+    String biggest = romanNumber.substring(biggestIndex, biggestIndex + 1);
+    // Search for the first appearance of the highest Roman letter
+    for (Integer index = 0; index < romanNumber.length(); index++) {
+      if (this.romanLetterDict
+          .get(RomanLetters.findLetter(romanNumber.substring(index, index + 1))) > this.romanLetterDict
+              .get(RomanLetters.findLetter(biggest))) {
+        biggestIndex = index;
+        biggest = romanNumber.substring(index, index + 1);
+      }
+    }
+
+    return this.validateRomanSubRule(romanNumber.substring(0, biggestIndex), RomanLetters.findLetter(biggest))
+        && this.validateRomanSubRule(romanNumber.substring(biggestIndex + 1));
+  }
+
+  /**
+   * 
+   * 
+   * @param romanNumber to check
+   * @param lastBiggest last first biggest Roman letter found (not included in
+   *                    string romanNumber)
+   * @return true is the number is valid otherwise false
+   */
+  public boolean validateRomanSubRule(String romanNumber, RomanLetters lastBiggest) {
+
+    // Base cases for recursion
+    if (romanNumber.length() == 0) {
+      return true;
+    }
+
+    Integer biggestIndex = 0;
+    String biggest = romanNumber.substring(biggestIndex, biggestIndex + 1);
+    Boolean twice = false;
+    // Search for the first appearance of the highest Roman letter
+    for (Integer index = 0; index < romanNumber.length(); index++) {
+
+      /**
+       * Only one small-value symbol may be subtracted from any large-value symbol.
+       */
+      if (this.romanLetterDict
+          .get(RomanLetters.findLetter(romanNumber.substring(index, index + 1))) == this.romanLetterDict
+              .get(RomanLetters.findLetter(biggest))
+          && biggestIndex != index) {
+        twice = true;
+      }
+
+      if (this.romanLetterDict
+          .get(RomanLetters.findLetter(romanNumber.substring(index, index + 1))) > this.romanLetterDict
+              .get(RomanLetters.findLetter(biggest))) {
+        biggestIndex = index;
+        biggest = romanNumber.substring(index, index + 1);
+        twice = false;
+      }
+
+    }
+    if (twice) {
+      return false;
+    }
+
+    // "V", "L", and "D" can never be subtracted.
+    if (String.valueOf(this.romanLetterDict.get(RomanLetters.findLetter(biggest))).charAt(0) == '5') {
+      return false;
+    }
+
+    /**
+     * "I" (1) can be subtracted from "V" (5) and "X" (10) only. "X" (10) can be
+     * subtracted from "L" (50) and "C" (100) only. "C" (100) can be subtracted from
+     * "D" (500) and "M" (1000) only.
+     */
+    if (!(this.romanLetterDict.get(RomanLetters.findLetter(biggest)) * 10 == this.romanLetterDict.get(lastBiggest)
+        || this.romanLetterDict.get(RomanLetters.findLetter(biggest)) * 5 == this.romanLetterDict.get(lastBiggest))) {
+      return false;
+    }
+
+    return this.validateRomanSubRule(romanNumber.substring(0, biggestIndex), RomanLetters.findLetter(biggest))
+        && this.validateRomanSubRule(romanNumber.substring(biggestIndex + 1));
+
+  }
 }
