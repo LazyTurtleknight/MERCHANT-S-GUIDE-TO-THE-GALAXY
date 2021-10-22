@@ -147,18 +147,32 @@ public class AliasContainer {
       return true;
     }
 
+    Boolean twice = false;
     Integer biggestIndex = 0;
     String biggest = romanNumber.substring(biggestIndex, biggestIndex + 1);
     // Search for the first appearance of the highest Roman letter
     for (Integer index = 0; index < romanNumber.length(); index++) {
+      /**
+       * Only one small-value symbol may be subtracted from any large-value symbol.
+       */
+      if (this.romanLetterDict
+          .get(RomanLetters.findLetter(romanNumber.substring(index, index + 1))) == this.romanLetterDict
+              .get(RomanLetters.findLetter(biggest))
+          && biggestIndex != index) {
+        twice = true;
+      }
       if (this.romanLetterDict
           .get(RomanLetters.findLetter(romanNumber.substring(index, index + 1))) > this.romanLetterDict
               .get(RomanLetters.findLetter(biggest))) {
         biggestIndex = index;
         biggest = romanNumber.substring(index, index + 1);
+        twice = false;
       }
     }
 
+    if (twice && romanNumber.substring(0, biggestIndex).length() > 0) {
+      return false;
+    }
     return this.validateRomanSubRule(romanNumber.substring(0, biggestIndex), RomanLetters.findLetter(biggest))
         && this.validateRomanSubRule(romanNumber.substring(biggestIndex + 1));
   }
