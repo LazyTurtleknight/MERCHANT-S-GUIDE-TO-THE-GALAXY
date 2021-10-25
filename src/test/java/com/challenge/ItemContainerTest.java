@@ -1,10 +1,7 @@
 package com.challenge;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * Unit test for ItemContainer class.
@@ -16,11 +13,11 @@ public class ItemContainerTest {
     ItemContainer itemContainer = new ItemContainer();
     String item = "item";
     Double cost = 10.0d;
-    assertTrue(itemContainer.addItem(item, cost));
+    Assertions.assertTrue(itemContainer.addItem(item, cost));
     // Items can not be added twice
-    assertFalse(itemContainer.addItem(item, cost));
+    Assertions.assertFalse(itemContainer.addItem(item, cost));
     // Items with same key but different cost are not considered as different items
-    assertFalse(itemContainer.addItem(item, cost * 2));
+    Assertions.assertFalse(itemContainer.addItem(item, cost * 2));
   }
 
   @Test
@@ -30,11 +27,11 @@ public class ItemContainerTest {
     Double cost = 10.0d;
 
     // Correctly invalidates unregistered items
-    assertFalse(itemContainer.valiadteItem(item));
+    Assertions.assertFalse(itemContainer.valiadteItem(item));
 
     // Correctly validates registered items
     itemContainer.addItem(item, cost);
-    assertTrue(itemContainer.valiadteItem(item));
+    Assertions.assertTrue(itemContainer.valiadteItem(item));
 
   }
 
@@ -44,6 +41,6 @@ public class ItemContainerTest {
     String item = "item";
     Double cost = 10.0d;
     itemContainer.addItem(item, cost);
-    assertEquals(itemContainer.getItemCost(item), cost);
+    Assertions.assertEquals(itemContainer.getItemCost(item), cost);
   }
 }

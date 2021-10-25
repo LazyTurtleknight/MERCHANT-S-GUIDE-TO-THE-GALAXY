@@ -1,10 +1,8 @@
 package com.challenge;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Unit test for AliasContainer.
@@ -13,7 +11,7 @@ public class AliasContainerTest {
 
   AliasContainer aliasContainer;
 
-  @Before
+  @BeforeEach
   public void setUp() {
     aliasContainer = new AliasContainer();
   }
@@ -22,23 +20,51 @@ public class AliasContainerTest {
   public void testAddAlias() {
     // Test if the addAlias function correctly accepts every correct Roman letter.
     for (RomanLetters letter : RomanLetters.values()) {
-      assertTrue(aliasContainer.addAlias(letter.letter + letter.letter, letter.letter));
+      Assertions.assertTrue(aliasContainer.addAlias(letter.letter + letter.letter, letter.letter));
     }
 
     // Test if the addAlias function correctly declines false input.
-    assertFalse(aliasContainer.addAlias("Random", "B"));
+    Assertions.assertFalse(aliasContainer.addAlias("Random", "B"));
 
     // Test if the addAlias function correctly declines already used aliases.
-    assertTrue(aliasContainer.addAlias("Random", RomanLetters.I.letter));
-    assertFalse(aliasContainer.addAlias("Random", "B"));
+    Assertions.assertTrue(aliasContainer.addAlias("Random", RomanLetters.I.letter));
+    Assertions.assertFalse(aliasContainer.addAlias("Random", "B"));
 
+  }
+
+  @Test
+  public void testValidateAlias() {
+    String alias1 = "alias1";
+    String alias2 = "alias2";
+    String fakeAlias = "fakeAlias";
+    String[] aliases = { alias1, alias2 };
+    String[] fakeAliases = { alias1, fakeAlias, alias2 };
+
+    Assertions.assertFalse(aliasContainer.validateAliases(aliases));
+    aliasContainer.addAlias(alias1, RomanLetters.I.letter);
+    aliasContainer.addAlias(alias2, RomanLetters.X.letter);
+    Assertions.assertTrue(aliasContainer.validateAliases(aliases));
+    Assertions.assertFalse(aliasContainer.validateAliases(fakeAliases));
+  }
+
+  @Test
+  public void testConvertAliasToRoman() {
+    String alias1 = "alias1";
+    String alias2 = "alias2";
+    String[] aliases = { alias1, alias2 };
+    String romanNumber = RomanLetters.I.letter + RomanLetters.X.letter;
+
+    aliasContainer.addAlias(alias1, RomanLetters.I.letter);
+    aliasContainer.addAlias(alias2, RomanLetters.X.letter);
+
+    Assertions.assertEquals(aliasContainer.convertAliasToRoman(aliases), romanNumber);
   }
 
   @Test
   public void testConvertRomanToDecimal() {
     String accept = RomanLetters.M.letter + RomanLetters.D.letter + RomanLetters.C.letter + RomanLetters.L.letter
         + RomanLetters.X.letter + RomanLetters.V.letter + RomanLetters.I.letter;
-    assertTrue(aliasContainer.convertRomanToDecimal(accept) == 1666);
+    Assertions.assertTrue(aliasContainer.convertRomanToDecimal(accept) == 1666);
 
   }
 
@@ -55,12 +81,12 @@ public class AliasContainerTest {
 
     String declineTwoVRepetitions = RomanLetters.V.letter + RomanLetters.V.letter;
 
-    assertTrue(aliasContainer.validateRomanNumber(acceptEveryLetter));
-    assertTrue(aliasContainer.validateRomanNumber(acceptThreeMRepetitions));
+    Assertions.assertTrue(aliasContainer.validateRomanNumber(acceptEveryLetter));
+    Assertions.assertTrue(aliasContainer.validateRomanNumber(acceptThreeMRepetitions));
 
-    assertFalse(aliasContainer.validateRomanNumber(declineEveryLetterReverse));
-    assertFalse(aliasContainer.validateRomanNumber(declineFourMRepetitions));
-    assertFalse(aliasContainer.validateRomanNumber(declineTwoVRepetitions));
+    Assertions.assertFalse(aliasContainer.validateRomanNumber(declineEveryLetterReverse));
+    Assertions.assertFalse(aliasContainer.validateRomanNumber(declineFourMRepetitions));
+    Assertions.assertFalse(aliasContainer.validateRomanNumber(declineTwoVRepetitions));
 
   }
 
@@ -69,26 +95,26 @@ public class AliasContainerTest {
 
     String acceptISubV = RomanLetters.I.letter + RomanLetters.V.letter;
     String declineISubM = RomanLetters.I.letter + RomanLetters.M.letter;
-    assertTrue(aliasContainer.validateRomanSubRule(acceptISubV));
-    assertFalse(aliasContainer.validateRomanSubRule(declineISubM));
+    Assertions.assertTrue(aliasContainer.validateRomanSubRule(acceptISubV));
+    Assertions.assertFalse(aliasContainer.validateRomanSubRule(declineISubM));
 
     String acceptXSubL = RomanLetters.X.letter + RomanLetters.L.letter;
     String declineXSubM = RomanLetters.X.letter + RomanLetters.M.letter;
-    assertTrue(aliasContainer.validateRomanSubRule(acceptXSubL));
-    assertFalse(aliasContainer.validateRomanSubRule(declineXSubM));
+    Assertions.assertTrue(aliasContainer.validateRomanSubRule(acceptXSubL));
+    Assertions.assertFalse(aliasContainer.validateRomanSubRule(declineXSubM));
 
     String acceptCSubM = RomanLetters.C.letter + RomanLetters.M.letter;
-    assertTrue(aliasContainer.validateRomanSubRule(acceptCSubM));
+    Assertions.assertTrue(aliasContainer.validateRomanSubRule(acceptCSubM));
 
     String declineVSubL = RomanLetters.V.letter + RomanLetters.L.letter;
     String declineLSubC = RomanLetters.L.letter + RomanLetters.C.letter;
     String declineDSubM = RomanLetters.D.letter + RomanLetters.M.letter;
-    assertFalse(aliasContainer.validateRomanSubRule(declineVSubL));
-    assertFalse(aliasContainer.validateRomanSubRule(declineLSubC));
-    assertFalse(aliasContainer.validateRomanSubRule(declineDSubM));
+    Assertions.assertFalse(aliasContainer.validateRomanSubRule(declineVSubL));
+    Assertions.assertFalse(aliasContainer.validateRomanSubRule(declineLSubC));
+    Assertions.assertFalse(aliasContainer.validateRomanSubRule(declineDSubM));
 
     String declineDoubleSub = RomanLetters.X.letter + RomanLetters.X.letter + RomanLetters.L.letter;
-    assertFalse(aliasContainer.validateRomanSubRule(declineDoubleSub));
+    Assertions.assertFalse(aliasContainer.validateRomanSubRule(declineDoubleSub));
 
   }
 

@@ -60,6 +60,38 @@ public class AliasContainer {
   }
 
   /**
+   * Check if a given String array of aliases only contains valid aliases.
+   * 
+   * @param aliases to check
+   * @return true if all aliases are registered otherwise false
+   */
+  public boolean validateAliases(String[] aliases) {
+    for (String alias : aliases) {
+      if (!this.aliasDictionary.containsKey(alias)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  /**
+   * Converts a number consisting of aliases (of Roman numerals) to Roman
+   * numerals.
+   * 
+   * This function expects that the aliases have been validated.
+   * 
+   * @param aliases to convert
+   * @return converted Roman Number
+   */
+  public String convertAliasToRoman(String[] aliases) {
+    String romanNumber = "";
+    for (String alias : aliases) {
+      romanNumber += this.aliasDictionary.get(alias).letter;
+    }
+    return romanNumber;
+  }
+
+  /**
    * This function takes a Roman number as string and converts it to a decimal
    * number.
    * 
