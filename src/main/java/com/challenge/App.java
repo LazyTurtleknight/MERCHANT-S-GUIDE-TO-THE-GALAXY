@@ -23,13 +23,15 @@ public class App {
     }
 
     if (inputComponents.length <= 2) {
-      System.out.println("I have no idea what you are talking about. Maybe there are some spaces mising.");
+      System.out.println("I have no idea what you are talking about. Maybe there are some spaces missing.");
     } else if (inputComponents.length == 3) {
       handleAddAlias(inputComponents);
     } else if (inputComponents.length >= 5 && inputComponents[inputComponents.length - 1].equals("Credits")) {
       handleAddItem(inputComponents);
     } else if (inputComponents.length >= 7 && inputComponents[inputComponents.length - 1].equals("?")) {
       handleQuestion(inputComponents);
+    } else {
+      System.out.println("I have no idea what you are talking about.");
     }
   }
 
@@ -102,7 +104,7 @@ public class App {
     if (aliasContainer.validateRomanNumber(convertedAliases) && itemContainer.valiadteItem(item)) {
       Integer quantity = aliasContainer.convertRomanToDecimal(convertedAliases);
       System.out.println(String.join(" ", aliases) + " " + item + " is "
-          + (int) (itemContainer.getItemCost(item) * quantity) + " Credits.");
+          + (int) Math.round((itemContainer.getItemCost(item) * quantity)) + " Credits.");
       return;
     } else {
       System.out.println("Either the item has not been registered yet or the given number is not valid.");
