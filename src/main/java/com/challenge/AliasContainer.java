@@ -135,8 +135,15 @@ public class AliasContainer {
 
   }
 
+  /**
+   * Check if a given Roman number is valid.
+   * 
+   * @param romanNumber to validate
+   * @return true if the number is valid otherwise false
+   */
   public boolean validateRomanNumber(String romanNumber) {
 
+    // check that every character is a Roman numeral
     for (Integer index = 0; index < romanNumber.length(); index++) {
       if (RomanLetters.findLetter(romanNumber.substring(index, index + 1)) == null) {
         return false;
@@ -164,10 +171,11 @@ public class AliasContainer {
   }
 
   /**
-   * This is a helper function starts the check if a given Roman number is valid
-   * and is used by the recursion of validateRomanSubRule function below.
+   * This helper function starts the verification process of validating a given
+   * Roman number and is used by the recursion of validateRomanSubRule function
+   * below.
    * 
-   * This function except to be called by validateRomanNumber because it needs
+   * This function expects to be called by validateRomanNumber because it needs
    * some preprocessing from that function.
    * 
    * @param romanNumber to check
@@ -175,6 +183,7 @@ public class AliasContainer {
    */
   public boolean validateRomanSubRule(String romanNumber) {
 
+    // base case for recursion
     if (romanNumber.length() == 0) {
       return true;
     }
@@ -182,7 +191,7 @@ public class AliasContainer {
     Boolean twice = false;
     Integer biggestIndex = 0;
     String biggest = romanNumber.substring(biggestIndex, biggestIndex + 1);
-    // Search for the first appearance of the highest Roman letter
+    // Search for the first appearance of the Roman letter with highest value
     for (Integer index = 0; index < romanNumber.length(); index++) {
       /**
        * Only one small-value symbol may be subtracted from any large-value symbol.
