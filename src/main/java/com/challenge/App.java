@@ -6,7 +6,9 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 
 /**
- * Class containing main function.
+ * Class containing main function. While running it collects line by line from
+ * System.in, parses them for queries and call appropriate functions to handle
+ * the queries.
  */
 public class App {
 
